@@ -25,13 +25,12 @@ Activity Level: {user_profile['activity_level']}
 Fitness Goal: {user_profile['goal']}
 Muscle Focus: {user_profile['muscle_focus']}
 
-Include:
-- Warm-up exercises
-- Main workout routine (focused on {user_profile['muscle_focus']})
-- Cool-down/stretching
-- Approximate duration
-- Tips for motivation and injury prevention
+Output the plan in a tabular format with the following columns:
+| Phase | Exercise | Duration | Notes |
 
-Format your output in clean markdown.
+Phases include: Warm-up, Main Workout, Cool-down.
+
+After the table, add 5 bullet-point **tips** (e.g., safety, breathing, consistency).
+
 """
     return call_llm_ollama(prompt)
