@@ -23,11 +23,11 @@ Weight: {user_profile['weight']} kg
 Height: {user_profile['height']} cm
 Activity Level: {user_profile['activity_level']}
 Fitness Goal: {user_profile['goal']}
-Preference: Home-based workout
+Muscle Focus: {user_profile['muscle_focus']}
 
 Include:
 - Warm-up exercises
-- Main workout routine
+- Main workout routine (focused on {user_profile['muscle_focus']})
 - Cool-down/stretching
 - Approximate duration
 - Tips for motivation and injury prevention
