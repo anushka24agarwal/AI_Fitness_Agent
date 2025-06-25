@@ -1,9 +1,10 @@
 import streamlit as st
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from agents.health_agent import generate_meal_plan
 from agents.fitness_agent import generate_fitness_plan
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 
 st.title("💪 AI Health & Fitness Planner")
 
@@ -41,6 +42,7 @@ with tab2:
         height = st.number_input("Height (cm)", key="fitness_height")
         activity_level = st.selectbox("Activity Level", ["Sedentary", "Moderately Active", "Very Active"], key="fitness_activity")
         goal = st.selectbox("Fitness Goal", ["Weight Loss", "Muscle Gain", "Maintenance"], key="fitness_goal")
+        muscle_focus = st.selectbox("Muscle Focus", ["Upper Body", "Lower Body", "Shoulders", "Arms", "Glutes"], key="muscle_focus")
         submitted = st.form_submit_button("Generate Fitness Plan")
 
     if submitted:
@@ -49,7 +51,8 @@ with tab2:
             "weight": weight,
             "height": height,
             "activity_level": activity_level,
-            "goal": goal
+            "goal": goal,
+            "muscle_focus": muscle_focus
         }
         st.info("Generating your fitness plan...")
         workout_plan = generate_fitness_plan(profile)
