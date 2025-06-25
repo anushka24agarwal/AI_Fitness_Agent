@@ -23,12 +23,10 @@ Activity level: {user_profile['activity_level']}
 Goal: {user_profile['goal']}
 Dietary preference: {user_profile['diet']}
 
-Include:
-- Breakfast, Lunch, Dinner, and Snacks
-- Approximate calories per meal
-- Hydration reminders
-- Tips on fiber, electrolytes
+Include these columns in the tablular format:
+| Meal | Items | Approximate Calories | Nutrients(Carbs/Protein/Fats etc) |
 
-Return the plan in clean markdown format.
+Add total 5 hydration and nutrition tips as bullet points **after the table**.
+
 """
     return call_llm_ollama(prompt)
