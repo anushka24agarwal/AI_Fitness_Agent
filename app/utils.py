@@ -8,7 +8,7 @@ class PDF(FPDF):
 
     def header(self):
         self.set_font("Arial", "B", 14)
-        self.cell(0, 10, self.title, ln=1, align="C")
+        self.cell(0, 10, "AI Fitness and Diet Planner", ln=1, align="C")
 
     def add_table(self, data):
         if not data:
@@ -55,7 +55,7 @@ class PDF(FPDF):
                 self.set_xy(x_before + sum(col_widths[:i+1]), y_before)
 
             self.ln(max_height)
-            
+
     def add_bullets(self, tips):
         if not tips:
             return
