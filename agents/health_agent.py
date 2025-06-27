@@ -14,7 +14,7 @@ def call_llm_ollama(prompt, model='mistral'):
 
 def generate_meal_plan(user_profile):
     prompt = f"""
-You are a certified nutritionist. Create a 1-day vegetarian meal plan based on this user profile:
+You are a certified nutritionist. Create a 1-day meal plan in **JSON format** based on the following user profile:
 
 Age: {user_profile['age']}
 Weight: {user_profile['weight']} kg
@@ -23,10 +23,30 @@ Activity level: {user_profile['activity_level']}
 Goal: {user_profile['goal']}
 Dietary preference: {user_profile['diet']}
 
-Include these columns in the tablular format:
-| Meal | Items | Approximate Calories | Nutrients(Carbs/Protein/Fats etc) |
+Return a list of dictionaries like:
+[
+  {{
+    "Meal": "Breakfast",
+    "Items": "Oats, Banana, Almonds",
+    "Calories": 350,
+    "Nutrients": "Carbs: 45g, Protein: 10g, Fat: 12g"
+  }},
+  ...
+]
 
-Add total 5 hydration and nutrition tips as bullet points **after the table**.
+Also, return a separate list of 5 bullet-point tips as a JSON list called `tips`.
+
+Final format:
+{{
+  "plan": [...],
+  "tips": [...]
+}}
+Only return this JSON. No markdown or explanation.
 
 """
-    return call_llm_ollama(prompt)
+    # return call_llm_ollama(prompt)
+    response = call_llm_ollama(prompt)
+    try:
+        return json.loads(response.strip())
+    except Exception as e:
+        return {"plan": [{"Meal": "Error", "Items": str(e), "Calories": "", "Nutrients": ""}], "tips": []}
