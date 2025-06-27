@@ -1,9 +1,11 @@
 import streamlit as st
 import sys
 import os
+import pandas as pd
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from agents.health_agent import generate_meal_plan
 from agents.fitness_agent import generate_fitness_plan
+from app.utils import generate_pdf
 
 
 st.title("💪 AI Health & Fitness Planner")
@@ -32,7 +34,18 @@ with tab1:
         }
         st.info("Generating your diet plan...")
         meal_plan = generate_meal_plan(profile)
-        st.markdown(meal_plan)
+        # Show table
+        st.subheader("Your Meal Plan")
+        st.table(pd.DataFrame(meal_plan["plan"]))
+
+        # Show tips
+        st.subheader("Tips")
+        for tip in meal_plan["tips"]:
+            st.markdown(f"- {tip}")
+
+        pdf_path = generate_pdf(meal_plan, title="Meal Plan")
+        with open(pdf_path, "rb") as f:
+            st.download_button("📄 Download Meal Plan as PDF", f, "meal_plan.pdf", "application/pdf")
 
 with tab2:
     st.subheader("Generate a Personalized Fitness Plan")
@@ -57,3 +70,11 @@ with tab2:
         st.info("Generating your fitness plan...")
         workout_plan = generate_fitness_plan(profile)
         st.markdown(workout_plan)
+        pdf_path = generate_pdf(workout_plan, title="Personalized Fitness Plan")
+        with open(pdf_path, "rb") as f:
+            st.download_button(
+                label="📄 Download Fitness Plan as PDF",
+                data=f,
+                file_name="fitness_plan.pdf",
+                mime="application/pdf"
+            )
