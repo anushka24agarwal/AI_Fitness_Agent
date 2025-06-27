@@ -43,7 +43,7 @@ with tab1:
         for tip in meal_plan["tips"]:
             st.markdown(f"- {tip}")
 
-        pdf_path = generate_pdf(meal_plan, title="Meal Plan")
+        pdf_path = generate_pdf(meal_plan, title="Personalised Meal Plan")
         with open(pdf_path, "rb") as f:
             st.download_button("📄 Download Meal Plan as PDF", f, "meal_plan.pdf", "application/pdf")
 
@@ -69,7 +69,15 @@ with tab2:
         }
         st.info("Generating your fitness plan...")
         workout_plan = generate_fitness_plan(profile)
-        st.markdown(workout_plan)
+        # Show table
+        st.subheader("Your Workout Plan")
+        st.table(pd.DataFrame(workout_plan["plan"]))
+
+        # Show tips
+        st.subheader("Tips")
+        for tip in workout_plan["tips"]:
+            st.markdown(f"- {tip}")
+
         pdf_path = generate_pdf(workout_plan, title="Personalized Fitness Plan")
         with open(pdf_path, "rb") as f:
             st.download_button(
