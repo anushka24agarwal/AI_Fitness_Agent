@@ -12,6 +12,8 @@ st.title("💪 AI Health & Fitness Planner")
 
 tab1, tab2 = st.tabs(["🥗 Diet Plan", "🏋️ Fitness Plan"])
 
+# ---------- MEAL TAB ----------
+
 with tab1:
     st.subheader("Generate a Personalized Meal Plan")
     with st.form("diet_form"):
@@ -46,6 +48,8 @@ with tab1:
         pdf_path = generate_pdf(meal_plan, title="Personalised Meal Plan")
         with open(pdf_path, "rb") as f:
             st.download_button("📄 Download Meal Plan as PDF", f, "meal_plan.pdf", "application/pdf")
+
+# ---------- FITNESS TAB ----------
 
 with tab2:
     st.subheader("Generate a Personalized Fitness Plan")
@@ -86,3 +90,4 @@ with tab2:
                 file_name="fitness_plan.pdf",
                 mime="application/pdf"
             )
+            

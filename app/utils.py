@@ -10,53 +10,43 @@ class PDF(FPDF):
         self.set_font("Arial", "B", 14)
         self.cell(0, 10, "AI Fitness and Diet Planner", ln=1, align="C")
 
-    # def add_table(self, data):
-    #     if not data:
-    #         return
-
-    #     # Get headers
-    #     headers = list(data[0].keys())
-
-    #     # Estimate column widths based on max content length
-    #     col_widths = []
-    #     for header in headers:
-    #         max_len = max(len(str(row.get(header, ""))) for row in data)
-    #         col_width = max(len(header), max_len) * 2.5
-    #         col_widths.append(min(col_width, 60))  # Limit width
-
-    #     # Print header
-    #     self.set_font("Arial", "B", 12)
-    #     for i, header in enumerate(headers):
-    #         self.cell(col_widths[i], 8, header, border=1, align="C")
-    #     self.ln()
-
-    #     # Print rows
-    #     self.set_font("Arial", "", 11)
-    #     for row in data:
-    #         y_before = self.get_y()
-    #         x_before = self.get_x()
-
-    #         # Determine max height for this row (based on cell line-wrapping)
-    #         cell_heights = []
-    #         for i, key in enumerate(headers):
-    #             text = str(row.get(key, ""))
-    #             num_lines = len(self.multi_cell(col_widths[i], 8, text, border=0, align='L', split_only=True))
-    #             cell_heights.append(num_lines * 8)
-    #         max_height = max(cell_heights)
-
-    #         # Reset position to start of row
-    #         self.set_y(y_before)
-    #         self.set_x(x_before)
-
-    #         # Draw each cell in the row
-    #         for i, key in enumerate(headers):
-    #             text = str(row.get(key, ""))
-    #             self.multi_cell(col_widths[i], 8, text, border=1, align='L')
-    #             self.set_xy(x_before + sum(col_widths[:i+1]), y_before)
-
-    #         self.ln(max_height)
-
     def add_table(self, data):
+        # Extract headers
+        headers = list(data[0].keys())
+
+        # Set font and column widths
+        self.set_font("Arial", "B", 12)
+        col_widths = [40, 60, 40, 50]  # Adjust based on your table structure
+
+        # Header row
+        self.set_fill_color(200, 220, 255)
+        for i, header in enumerate(headers):
+            self.cell(col_widths[i], 10, header, border=1, align='C', fill=True)
+        self.ln()
+
+        # Set font for data rows
+        self.set_font("Arial", "", 11)
+
+        for row in data:
+            y_start = self.get_y()
+            x_start = self.get_x()
+            max_height = 0
+
+            # Calculate height needed for each cell
+            heights = []
+            for i, key in enumerate(headers):
+                txt = str(row.get(key, ""))
+                num_lines = len(self.multi_cell(col_widths[i], 6, txt, border=0, align='L', split_only=True))
+                heights.append(num_lines * 6)
+            max_height = max(heights)
+
+            # Draw cells
+            for i, key in enumerate(headers):
+                self.set_xy(x_start + sum(col_widths[:i]), y_start)
+                txt = str(row.get(key, ""))
+                self.multi_cell(col_widths[i], 6, txt, border=1, align='L')
+
+            self.ln(max_height)
         if not data:
             return
 
